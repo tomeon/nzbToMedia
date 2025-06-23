@@ -30,20 +30,22 @@ except ImportError:
         sys.exit('Please install pywin32')
 
 APP_ROOT = libs.util.module_path(parent=True)
+STATE_DIR = os.environ.get('NZBTOMEDIA_STATE_DIR', APP_ROOT)
 SOURCE_ROOT = libs.util.module_path()
 
 # init preliminaries
 SYS_ARGV = sys.argv[1:]
 APP_FILENAME = sys.argv[0]
 APP_NAME = os.path.basename(APP_FILENAME)
-LOG_DIR = os.path.join(APP_ROOT, 'logs')
-LOG_FILE = os.path.join(LOG_DIR, 'nzbtomedia.log')
-PID_FILE = os.path.join(LOG_DIR, 'nzbtomedia.pid')
-CONFIG_FILE = os.path.join(APP_ROOT, 'autoProcessMedia.cfg')
-CONFIG_SPEC_FILE = os.path.join(APP_ROOT, 'autoProcessMedia.cfg.spec')
-CONFIG_MOVIE_FILE = os.path.join(APP_ROOT, 'autoProcessMovie.cfg')
-CONFIG_TV_FILE = os.path.join(APP_ROOT, 'autoProcessTv.cfg')
-TEST_FILE = os.path.join(APP_ROOT, 'tests', 'test.mp4')
+LOG_DIR = os.environ.get('NZBTOMEDIA_LOG_DIR', os.path.join(STATE_DIR, 'logs'))
+LOG_FILE = os.environ.get('NZBTOMEDIA_LOG_FILE', os.path.join(LOG_DIR, 'nzbtomedia.log'))
+PID_FILE = os.environ.get('NZBTOMEDIA_PID_FILE', os.path.join(LOG_DIR, 'nzbtomedia.pid'))
+CONFIG_FILE = os.environ.get('NZBTOMEDIA_CONFIG_FILE', os.path.join(STATE_DIR, 'autoProcessMedia.cfg'))
+CONFIG_SPEC_FILE = os.environ.get('NZBTOMEDIA_CONFIG_SPEC_FILE', os.path.join(APP_ROOT, 'autoProcessMedia.cfg.spec'))
+CONFIG_MOVIE_FILE = os.environ.get('NZBTOMEDIA_CONFIG_MOVIE_FILE', os.path.join(APP_ROOT, 'autoProcessMovie.cfg'))
+CONFIG_TV_FILE = os.environ.get('NZBTOMEDIA_CONFIG_TV_FILE', os.path.join(APP_ROOT, 'autoProcessTv.cfg'))
+TEST_FILE = os.environ.get('NZBTOMEDIA_TEST_FILE', os.path.join(APP_ROOT, 'tests', 'test.mp4'))
+VERSION_FILE = os.environ.get('NZBTOMEDIA_VERSION_FILE', os.path.join(APP_ROOT, 'version.txt'))
 MYAPP = None
 
 import six

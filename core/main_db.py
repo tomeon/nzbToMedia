@@ -58,7 +58,7 @@ def db_filename(filename='nzbtomedia.db', suffix=None):
     """
     if suffix:
         filename = '{0}.{1}'.format(filename, suffix)
-    return core.os.path.join(core.APP_ROOT, filename)
+    return core.os.path.join(core.STATE_DIR, filename)
 
 
 class DBConnection(object):
