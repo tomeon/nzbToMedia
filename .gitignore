@@ -13,3 +13,8 @@
 *.dist-info
 *.egg-info
 /.vscode
+
+# Nix build result symlinks
+result
+result-*
+repl-result-*
