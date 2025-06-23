@@ -10,7 +10,7 @@ from __future__ import (
 import io
 import os.path
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def read(*names, **kwargs):
@@ -57,7 +57,8 @@ setup(
     author='Clinton Hall',
     author_email='fock_wulf@hotmail.com',
     url='https://github.com/clinton-hall/nzbToMedia',
-    packages=['core'],
+    packages=find_packages(exclude=['tests', 'tests.*']),
+    include_package_data=True,
     install_requires=[
         'pywin32;platform_system=="Windows"',
     ],
