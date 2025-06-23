@@ -56,6 +56,18 @@ class WorkingDirectory(object):
             )
 
 
+def is_truthy(s):
+    sl = s.lower()
+    return any([bs == sl for bs in ['true', 'yes', 'on', '1']])
+
+
+def skippable(f):
+    def skipper(*args, **kwargs):
+        if not is_truthy(os.environ.get('NZBTOMEDIA_SKIP_CLEANUP', '')):
+            return f(*args, **kwargs)
+    return skipper
+
+
 def module_path(module=__file__, parent=False):
     """
     Detect path for a module.
@@ -75,7 +87,7 @@ def module_path(module=__file__, parent=False):
     normalized = os.path.normpath(absolute)
     return normalized
 
-
+@skippable
 def git_clean(remove_directories=False, force=False, dry_run=False, interactive=False, quiet=False, exclude=None,
               ignore_rules=False, clean_ignored=False, paths=None):
     """Execute git clean commands."""
@@ -109,7 +121,7 @@ def git_clean(remove_directories=False, force=False, dry_run=False, interactive=
         command.extend(paths)
     return subprocess.check_output(command)
 
-
+@skippable
 def clean_bytecode():
     """Clean bytecode files."""
     try:
@@ -132,6 +144,7 @@ def clean_bytecode():
         return result
 
 
+@skippable
 def clean_folders(*paths):
     """Clean obsolete folders."""
     try:
@@ -149,6 +162,7 @@ def clean_folders(*paths):
         return result
 
 
+@skippable
 def force_clean_folder(path, required):
     """
     Force clean a folder and exclude any required subfolders.
@@ -169,7 +183,7 @@ def force_clean_folder(path, required):
     if missing:
         raise Exception('Required subfolders missing:', missing)
 
-
+@skippable
 def clean(paths):
     """Clean up bytecode and obsolete folders."""
     def _report_error(msg):
