@@ -1,3 +1,1 @@
-{pkgs ? import <nixpkgs> {}}: {
-  nzbToMedia = pkgs.callPackage ./release.nix {};
-}
+(import ./compat.nix).defaultNix
