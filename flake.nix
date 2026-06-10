@@ -19,6 +19,23 @@
         "x86_64-linux"
       ];
 
+      imports = [inputs.flake-parts.flakeModules.partitions];
+
+      partitionedAttrs.formatter = "dev";
+      partitions.dev = {
+        extraInputsFlake = ./nix/dev;
+        module = {inputs, ...}: {
+          imports = [inputs.treefmt-nix.flakeModule];
+          perSystem = {
+            treefmt = {
+              flakeFormatter = true;
+              projectRootFile = "flake.nix";
+              programs.alejandra.enable = true;
+            };
+          };
+        };
+      };
+
       perSystem = {
         config,
         pkgs,
