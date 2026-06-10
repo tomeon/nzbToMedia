@@ -124,10 +124,22 @@ in
     nativeCheckInputs = with python3.pkgs; [pytestCheckHook];
     enabledTestPaths = ["tests"];
     pytestFlags = ["--doctest-modules"];
-    preCheck = lib.pipe (envDefault // envMandatory) [
-      (lib.mapAttrsToList (name: value: ''export ${name}="${value}"''))
-      (lib.concatStringsSep "\n")
-    ];
+    preCheck =
+      (lib.pipe (envDefault
+        // envMandatory
+        // {
+          NZBTOMEDIA_STATE_DIR = "\${TMPDIR}/nzbtomedia";
+          NZBTOMEDIA_CONFIG_FILE = "\${PWD}/autoProcessMedia.cfg";
+          NZBTOMEDIA_LOG_DIR = "\${TMPDIR}/log";
+          NZBTOMEDIA_LOG_FILE = "/dev/stderr";
+        }) [
+        (lib.mapAttrsToList (name: value: ''export ${name}="${value}"''))
+        (lib.concatStringsSep "\n")
+      ])
+      + ''
+
+        mkdir -p "$NZBTOMEDIA_STATE_DIR"
+      '';
 
     meta = {
       homepage = "https://github.com/clinton-hall/nzbToMedia";
