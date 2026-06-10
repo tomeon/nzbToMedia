@@ -14,16 +14,22 @@
   nzbToMediaLogDir ? "/var/empty",
   nzbToMediaLogFile ? "/dev/stderr",
   nzbToMediaCategories ? {},
+  # `unrar` is unfree.  Default to enabling it, rather than (say) enabling it
+  # by default if we detect that unfree packages are allowed, because it would
+  # be rude to silently provide a package incapable of extracting `.rar` files
+  # only for this inability to cause blow-ups or other nastiness at runtime.
+  enableUnrar ? true,
 }: let
-  propagatedBuildInputs = [
-    coreutils
-    ffmpeg
-    gnutar
-    p7zip
-    par2cmdline
-    unrar
-    unzip
-  ];
+  propagatedBuildInputs =
+    [
+      coreutils
+      ffmpeg
+      gnutar
+      p7zip
+      par2cmdline
+      unzip
+    ]
+    ++ lib.optional enableUnrar unrar;
 
   replacements = let
     categoryReplacements =
